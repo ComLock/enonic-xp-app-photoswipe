@@ -28,7 +28,7 @@ const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
 
 
 //──────────────────────────────────────────────────────────────────────────────
-// Server-side Javascript
+// Assets
 //──────────────────────────────────────────────────────────────────────────────
 const ALL_JS_ASSETS_GLOB = `${SRC_DIR}/${ASSETS_PATH_GLOB_BRACE}/**/${JS_EXTENSION_GLOB_BRACE}`;
 //console.log(`ALL_JS_ASSETS_GLOB:${toStr(ALL_JS_ASSETS_GLOB)}`);
@@ -36,6 +36,50 @@ const ALL_JS_ASSETS_GLOB = `${SRC_DIR}/${ASSETS_PATH_GLOB_BRACE}/**/${JS_EXTENSI
 const ALL_JS_ASSETS_FILES = glob.sync(ALL_JS_ASSETS_GLOB);
 //console.log(`ALL_JS_ASSETS_FILES:${toStr(ALL_JS_ASSETS_FILES)}`);
 
+const ASSETS_JS_ENTRY = dict(ALL_JS_ASSETS_FILES.map(k => [
+    k.replace(`${SRC_DIR}/`, '').replace(/\.[^.]*$/, ''), // name
+    `.${k.replace(`${SRC_DIR}`, '')}` // source relative to context
+]));
+
+const ASSETS_JS_CONFIG = {
+    context,
+    entry: ASSETS_JS_ENTRY,
+    devtool: false, // Don't waste time generating sourceMaps
+    mode: 'production',
+    module: {
+        rules: [{
+            test: /\.(es6?|js)$/, // Will need js for node module depenencies
+            use: [{
+                loader: 'babel-loader',
+                options: {
+                    babelrc: false, // The .babelrc file should only be used to transpile config files.
+                    comments: false,
+                    compact: false,
+                    minified: false,
+                    plugins: [
+                        'array-includes',
+                        'optimize-starts-with',
+                        'transform-object-assign',
+                        'transform-object-rest-spread'
+                    ],
+                    presets: ['es2015']
+                } // options
+            }] // use
+        }] // rules
+    }, // module
+    output: {
+        path: outputPath,
+        filename: '[name].js',
+        libraryTarget: 'commonjs'
+    }, // output
+    resolve: {
+        extensions
+    } // resolve
+}; // ASSETS_JS_CONFIG
+
+//──────────────────────────────────────────────────────────────────────────────
+// Server-side Javascript
+//──────────────────────────────────────────────────────────────────────────────
 const SERVER_JS_FILES = glob.sync(`${SRC_DIR}/**/${JS_EXTENSION_GLOB_BRACE}`, {
     ignore: ALL_JS_ASSETS_FILES
 });
@@ -99,6 +143,7 @@ const SERVER_JS_CONFIG = {
 // Exports
 //──────────────────────────────────────────────────────────────────────────────
 const WEBPACK_CONFIG = [
+    ASSETS_JS_CONFIG,
     SERVER_JS_CONFIG
 ];
 
