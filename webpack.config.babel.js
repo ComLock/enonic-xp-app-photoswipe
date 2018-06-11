@@ -4,7 +4,7 @@
 //──────────────────────────────────────────────────────────────────────────────
 import glob from 'glob';
 import path from 'path';
-
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Common
@@ -25,6 +25,44 @@ const outputPath = path.join(__dirname, DST_DIR);
 //──────────────────────────────────────────────────────────────────────────────
 //const toStr = v => JSON.stringify(v, null, 4);
 const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
+
+//──────────────────────────────────────────────────────────────────────────────
+// CSS
+//──────────────────────────────────────────────────────────────────────────────
+const CSS_CONFIG = {
+    context,
+    devtool: false, // Don't waste time generating sourceMaps
+    entry: {
+        'assets/photoswipe': './assets/photoswipe.css'
+    },
+    mode: 'production',
+    module: {
+        rules: [{
+            test: /\.(css)$/,
+            use: ExtractTextPlugin.extract({
+                fallback: 'style-loader',
+                use: [
+                    'css-loader'
+                ]
+            })
+        }, {
+            test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+            loader: 'url-loader',
+            options: {
+                limit: 10000
+            }
+        }]
+    }, // module
+    output: {
+        path: outputPath,
+        filename: '[name].css'
+    }, // output
+    plugins: [
+        new ExtractTextPlugin({
+            filename: '[name].css'
+        })
+    ]
+};
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -143,6 +181,7 @@ const SERVER_JS_CONFIG = {
 // Exports
 //──────────────────────────────────────────────────────────────────────────────
 const WEBPACK_CONFIG = [
+    CSS_CONFIG,
     ASSETS_JS_CONFIG,
     SERVER_JS_CONFIG
 ];
