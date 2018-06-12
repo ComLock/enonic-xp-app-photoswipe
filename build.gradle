@@ -49,6 +49,8 @@ sourceSets {
         }
         resources { // Paths relative to src/main/resources
             exclude '**/*.es' // Avoid having your es files copied into ./build
+            exclude '**/.gitkeep'
+            exclude '**/*.scss'
         }
     }
 }

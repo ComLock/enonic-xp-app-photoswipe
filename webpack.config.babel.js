@@ -4,7 +4,7 @@
 //──────────────────────────────────────────────────────────────────────────────
 import glob from 'glob';
 import path from 'path';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Common
@@ -33,18 +33,17 @@ const CSS_CONFIG = {
     context,
     devtool: false, // Don't waste time generating sourceMaps
     entry: {
-        'assets/photoswipe': './assets/photoswipe.css'
+        'assets/photoswipe': './assets/photoswipe.scss'
     },
     mode: 'production',
     module: {
         rules: [{
-            test: /\.(css)$/,
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                use: [
-                    'css-loader'
-                ]
-            })
+            test: /\.(scss)$/,
+            use: [
+                MiniCssExtractPlugin.loader,
+                'css-loader',
+                'sass-loader'
+            ]
         }, {
             test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
             loader: 'url-loader',
@@ -54,12 +53,13 @@ const CSS_CONFIG = {
         }]
     }, // module
     output: {
-        path: outputPath,
-        filename: '[name].css'
+        path: outputPath
     }, // output
     plugins: [
-        new ExtractTextPlugin({
-            filename: '[name].css'
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output both options are optional
+            filename: '[name].css',
+            chunkFilename: '[id].css'
         })
     ]
 };
