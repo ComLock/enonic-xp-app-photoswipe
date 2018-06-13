@@ -6,7 +6,7 @@ import {
 export function responseFilter(req, res) {
 	//log.info(`pageContributions:${JSON.stringify(res.pageContributions, null, 4)}`);
 	const currentSiteConfig = getCurrentSiteConfig();
-	log.info(`currentSiteConfig:${JSON.stringify(currentSiteConfig, null, 4)}`);
+	//log.info(`currentSiteConfig:${JSON.stringify(currentSiteConfig, null, 4)}`);
 	const cssSelector = currentSiteConfig.cssSelector || 'img';
 	const headEndHtmlStr = `<link rel="stylesheet" href="${assetUrl({path: 'css/photoswipe.css'})}"></link>`;
 	const bodyEndHtmlStr = `
