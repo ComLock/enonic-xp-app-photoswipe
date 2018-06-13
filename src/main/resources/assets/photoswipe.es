@@ -1,1 +1,0 @@
-import photoswipe from 'photoswipe';

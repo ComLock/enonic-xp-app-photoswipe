@@ -7,6 +7,9 @@ plugins {
 
 repositories {
     mavenLocal()
+    maven {
+			url 'http://nexus.mistral.mistralnett.com/content/groups/public'
+		}
     xp.enonicRepo()
     jcenter()
 }
@@ -53,6 +56,11 @@ sourceSets {
             exclude '**/*.scss'
         }
     }
+}
+
+
+tasks.withType(Copy) {
+  includeEmptyDirs = false
 }
 
 

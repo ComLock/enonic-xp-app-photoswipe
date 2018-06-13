@@ -1,4 +1,7 @@
 {
+  "comments": false,
+  "compact": false,
+  "minified": false,
   "plugins": [
     "array-includes",
     "optimize-starts-with",

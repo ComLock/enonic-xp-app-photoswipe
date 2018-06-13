@@ -30,6 +30,7 @@ module.exports = {
     }, //globals
 
     rules: { // https://eslint.org/docs/rules
+            'arrow-parens': ['error', 'as-needed'],
             'comma-dangle': ['error', {
                 arrays: 'ignore',
                 objects: 'never',
@@ -42,7 +43,7 @@ module.exports = {
             'import/no-absolute-path': ['off'],
             'import/no-extraneous-dependencies': ['off'],
             'import/no-unresolved': ['off'],
-            indent: ['error', 4],
+            indent: ['error', 'tab'],
             'max-len': ['error', 100, 2, {
                 ignoreUrls: true,
                 ignoreComments: true,
@@ -52,6 +53,7 @@ module.exports = {
             }],
             'no-cond-assign': ['error', 'except-parens'],
             'no-multi-spaces': ['off'],
+            'no-tabs': ['off'],
             'no-underscore-dangle': ['error', {
                 allow: [
                     '_id', // content-type property
