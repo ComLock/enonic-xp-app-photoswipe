@@ -4,6 +4,7 @@ import {
 } from '/lib/xp/portal';
 
 export function responseFilter(req, res) {
+	if (req.mode === 'edit') { return res; }
 	//log.info(`pageContributions:${JSON.stringify(res.pageContributions, null, 4)}`);
 	const currentSiteConfig = getCurrentSiteConfig();
 	//log.info(`currentSiteConfig:${JSON.stringify(currentSiteConfig, null, 4)}`);
