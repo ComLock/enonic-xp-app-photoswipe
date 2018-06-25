@@ -65,7 +65,6 @@ window.photoSwipeInitializer = images => {
 		wrapElement(image, anchorWrapper);
 
 		anchorWrapper.setAttribute('href', image.src);
-		anchorWrapper.setAttribute('style', 'display:inline-block');
 		const parentFigure = getClosest(image, 'figure');
 		parentFigure.setAttribute('data-index', index);
 
